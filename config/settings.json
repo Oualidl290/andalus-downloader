@@ -1,7 +1,7 @@
 {
   "download": {
     "max_concurrent_downloads": 2,
-    "default_output_path": "/app/downloads",
+    "default_output_path": "downloads",
     "default_quality": "best",
     "default_format": "mp4",
     "enable_thumbnails": true,
@@ -23,14 +23,18 @@
     "port": 8000,
     "workers": 1,
     "reload": true,
-    "log_level": "DEBUG",
+    "log_level": "INFO",
     "enable_cors": true,
     "cors_origins": [
-      "*"
+      "*",
+      "https://*.vercel.app",
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://127.0.0.1:3000"
     ]
   },
   "database": {
-    "db_path": "/app/data/andalus_downloader.db",
+    "db_path": "data/andalus_downloader.db",
     "backup_enabled": true,
     "backup_interval_hours": 24,
     "max_backups": 7
