@@ -1,7 +1,7 @@
 {
   "download": {
-    "max_concurrent_downloads": 2,
-    "default_output_path": "downloads",
+    "max_concurrent_downloads": 3,
+    "default_output_path": "/app/downloads",
     "default_quality": "best",
     "default_format": "mp4",
     "enable_thumbnails": true,
@@ -34,7 +34,7 @@
     ]
   },
   "database": {
-    "db_path": "data/andalus_downloader.db",
+    "db_path": "/app/data/andalus_downloader.db",
     "backup_enabled": true,
     "backup_interval_hours": 24,
     "max_backups": 7
