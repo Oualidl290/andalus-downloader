@@ -1,0 +1,17 @@
+Environment Variables for Railway Dashboard:
+
+ENVIRONMENT=production
+PYTHONUNBUFFERED=1
+PYTHONDONTWRITEBYTECODE=1
+LOG_LEVEL=INFO
+MAX_CONCURRENT_DOWNLOADS=3
+ENABLE_CORS=true
+DATABASE_PATH=/app/data/andalus_downloader.db
+DOWNLOADS_PATH=/app/downloads
+
+Instructions:
+1. Go to railway.app
+2. Open your andalus-downloader project
+3. Click on "Variables" tab
+4. Add each variable above (one per line)
+5. Railway will automatically redeploy with new variables
