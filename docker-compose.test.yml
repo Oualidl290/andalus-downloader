@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  andalus-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: andalus-dev-env
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=DEBUG
+      - MAX_CONCURRENT_DOWNLOADS=2
+      - DEFAULT_OUTPUT_PATH=/app/downloads
+      - DATABASE_PATH=/app/data/andalus_downloader.db
+    volumes:
+      # Mount the entire project for live development
+      - .:/app
+      # Persist data between container restarts
+      - dev_downloads:/app/downloads
+      - dev_data:/app/data
+      - dev_logs:/app/logs
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Test runner service
+  andalus-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: andalus-test-runner
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: python test_endpoints.py
+    depends_on:
+      - andalus-dev
+    profiles:
+      - testing
+
+volumes:
+  dev_downloads:
+  dev_data:
+  dev_logs:

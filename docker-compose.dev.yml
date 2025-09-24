@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  andalus-downloader:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: andalus-downloader-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LOG_LEVEL=DEBUG
+      - RELOAD=true
+      - WORKERS=1
+      - MAX_CONCURRENT_DOWNLOADS=2
+      - DEFAULT_OUTPUT_PATH=/app/downloads
+      - DATABASE_PATH=/app/data/andalus_downloader.db
+    volumes:
+      # Mount source code for development
+      - .:/app
+      - ./downloads:/app/downloads
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: ["python", "main.py"]
+
+volumes:
+  downloads:
+  data:
+  logs:
+  config:

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: andalus-downloader-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    buildCommand: ""
+    startCommand: "python main.py"
+    healthCheckPath: "/health"
+    envVars:
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: "8000"
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: MAX_CONCURRENT_DOWNLOADS
+        value: "2"
+      - key: DEFAULT_OUTPUT_PATH
+        value: "/tmp/downloads"
+      - key: DATABASE_PATH
+        value: "/tmp/andalus_downloader.db"

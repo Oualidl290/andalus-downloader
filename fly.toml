@@ -1,0 +1,36 @@
+app = "andalus-downloader"
+primary_region = "ord"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  HOST = "0.0.0.0"
+  PORT = "8000"
+  LOG_LEVEL = "INFO"
+  MAX_CONCURRENT_DOWNLOADS = "2"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  interval = "15s"
+  grace_period = "5s"
+  method = "GET"
+  path = "/health"
+  protocol = "http"
+  timeout = "10s"
+
+[mounts]
+  source = "andalus_data"
+  destination = "/app/data"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512
