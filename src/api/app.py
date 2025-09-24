@@ -129,10 +129,17 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure this properly for production
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=[
+        "http://localhost:8080",
+        "http://127.0.0.1:8080",
+        "https://andalus-downloader.vercel.app",
+        "https://*.vercel.app",
+        "*"  # Allow all origins for development
+    ],
+    allow_credentials=False,  # Set to False when using wildcard origins
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 
@@ -160,6 +167,12 @@ async def general_exception_handler(request, exc):
         ).model_dump()
     )
 
+
+# CORS preflight handler
+@app.options("/{full_path:path}")
+async def options_handler(full_path: str):
+    """Handle CORS preflight requests"""
+    return {"message": "OK"}
 
 # Health check endpoint
 @app.get("/health")
